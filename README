@@ -1,0 +1,22 @@
+323CDa Poata Andrei-Catalin
+
+Protocol:
+    1. Pentru securitate: trimit un mesaj inainte cu nr de bytes ce trebuie primiti si apoi trimit chunk-uri pe bucati pana trimit acel nr de bytes. La citire astept un
+    nr de bytes si apoi primesc acel nr de bytes pe bucati.
+
+    2. Pentru eficienta de extragere am udp_msg in care se parseaza ce e trimis de clientii UDP, sent_udp care pastreaza pe langa informatiile trimise de UDP si IP-ul si
+    port-ul de pe care au fost trimise si cate o structura pentru a parsa continutul in functie de type.
+
+Datele si statusurile clientilor sunt tinute intr-un map cu cheie id-ul clientului si valoare informatii despre acesta (topic-uri la care e abonat, status, SF-uri etc).
+
+Am 2 map-uri, unul care face trecere de la fd la id si unul de la id la fd pentru usurinta de acces la date.
+Se face multiplexare la input-uri cu ajutorul functiilor din socket.h
+Imprumutat helpers.h si o parte de cod de la laboratorul 8 de PCom.
+processUDP -> ia datele dintr-un mesaj UDP si il trimite userilor online sau il introduce in notificarile celorlalti clienti.
+printData -> scrie datele dintr-un mesaj UDP in modul verificat de checker. Pentru ca template-ul checkerului este diferit de cel din enunt, am pus varianta pentru enunt
+            comentata in cod. Daca se doreste afisarea aceleia, doar trebuie decomentata portiunea respectiva de cod si stearsa cealalta.
+send_message, recv_message -> trimite / primeste mesajele pe bucati
+updateClient -> Updateaza clientul dat
+newClient, newTopic -> aloca si returneaza un nou client / topic
+
+Overall, serverul si clientul primesc mesaje si verifica daca sunt de conexiune sau daca se transmit mesaje si se face ce trebuie facut in functie de caz.
